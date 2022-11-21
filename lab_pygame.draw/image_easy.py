@@ -10,6 +10,7 @@ FPS = 30
 scr_width, scr_height = 550, 750
 screen = pygame.display.set_mode((scr_width, scr_height))
 
+LIGHT_GRAY = (240, 240, 240)
 GRAY = (210, 210, 210)
 BLACK = (0, 0, 0)
 FISH = (150, 180, 170)
@@ -23,11 +24,11 @@ GRAY_BROWN = (235, 230, 225)
 
 #фон
 screen.fill(WHITE)
-rect(screen, GRAY, (0, 0, scr_width, 350))
+rect(screen, LIGHT_GRAY, (0, 0, scr_width, 350))
 
 def needle(x=150, y=400, width=250):
 
-    circle(screen, GRAY, (x, y), width/2, draw_top_left=True, draw_top_right=True)
+    circle(screen, LIGHT_GRAY, (x, y), width/2, draw_top_left=True, draw_top_right=True)
     circle(screen, BLACK, (x, y), width/2, 2, draw_top_left=True, draw_top_right=True)
 
     delta_y = width/7
@@ -104,7 +105,7 @@ def man(x=350, y=400, width=170, reflect=False): # x, y = координаты �
 
     #body
     ellipse(screen, BROWN, (x + unit_x * orient * (-2.7), y + unit_y * (-3.3), unit_x * orient * 7.3, unit_y * 16.2))
-    rect(screen, WHITE, (x + unit_x * orient * (-2.7), y + unit_y * (-3.3 + 8.1), unit_x * orient * 7.3, unit_y * 8.1))
+    rect(screen, WHITE, (x + unit_x * orient * (-2.7), y + unit_y * (-3.3 + 8.1), unit_x * orient * 7.3, unit_y * 9))
 
     #head
     ellipse(screen, LIGHT_BROWN, (x + unit_x * orient * (-1.1), y + unit_y * (-6), unit_x * orient * (4.5), unit_y * 3.4))
