@@ -1,8 +1,8 @@
 import math
 from random import choice
+from random import randint as rnd
 
 import pygame
-
 
 FPS = 30
 
@@ -20,6 +20,7 @@ GAME_COLORS = [RED, BLUE, YELLOW, GREEN, MAGENTA, CYAN]
 WIDTH = 800
 HEIGHT = 600
 
+GRAVITY = 2
 
 class Ball:
     def __init__(self, screen: pygame.Surface, x=40, y=450):
@@ -45,11 +46,18 @@ class Ball:
         self.x и self.y с учетом скоростей self.vx и self.vy, силы гравитации, действующей на мяч,
         и стен по краям окна (размер окна 800х600).
         """
-        # FIXME
+        self.vy -= GRAVITY
+
+        if (self.x + self.r >= WIDTH) or (self.x - self.r <= 0):
+            self.vx = -self.vx
+        if (self.y + self.r >= HEIGHT) or (self.y - self.r <= 0):
+            self.vy = -self.vy
+
         self.x += self.vx
         self.y -= self.vy
 
     def draw(self):
+        """Отрисовка мяча"""
         pygame.draw.circle(
             self.screen,
             self.color,
@@ -58,14 +66,10 @@ class Ball:
         )
 
     def hittest(self, obj):
-        """Функция проверяет сталкивалкивается ли данный обьект с целью, описываемой в обьекте obj.
-
-        Args:
-            obj: Обьект, с которым проверяется столкновение.
-        Returns:
-            Возвращает True в случае столкновения мяча и цели. В противном случае возвращает False.
-        """
-        # FIXME
+        """Функция проверяет сталкивалкивается ли данный обьект с целью, описываемой в обьекте obj"""
+        if ((self.x - obj.x)**2 + (self.y - obj.y)**2 <= (self.r + obj.r)**2):
+            return True
+        else:
             return False
 
 
@@ -107,9 +111,19 @@ class Gun:
             self.color = GREY
 
     def draw(self):
-        # FIXIT don't know how to do it
+        """Отрисовка пушки"""
+        len = 30
+        gun_x, gun_y = 40, 450
+        pygame.draw.line(
+            self.screen,
+            self.color,
+            (gun_x, gun_y),
+            (gun_x + len * math.cos(self.an), gun_y + len * math.sin(self.an)),
+            10
+        )
 
     def power_up(self):
+        """Увеличение силы выстрела пушки"""
         if self.f2_on:
             if self.f2_power < 100:
                 self.f2_power += 1
@@ -119,10 +133,15 @@ class Gun:
 
 
 class Target:
-    # self.points = 0
-    # self.live = 1
-    # FIXME: don't work!!! How to call this functions when object is created?
-    # self.new_target()
+    def __init__(self, screen, x = 700, y = 450, r = 20):
+        self.points = 0
+        self.live = 1
+        self.screen = screen
+        self.x = x
+        self.y = y
+        self.r = r
+        self.color = RED
+        self.new_target()
 
     def new_target(self):
         """ Инициализация новой цели. """
@@ -136,7 +155,13 @@ class Target:
         self.points += points
 
     def draw(self):
-        ...
+        """Отрисовка цели"""
+        pygame.draw.circle(
+            self.screen,
+            self.color,
+            (self.x, self.y),
+            self.r
+        )
 
 
 pygame.init()
@@ -146,7 +171,7 @@ balls = []
 
 clock = pygame.time.Clock()
 gun = Gun(screen)
-target = Target()
+target = Target(screen)
 finished = False
 
 while not finished:
