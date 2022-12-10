@@ -19,8 +19,10 @@ GAME_COLORS = [RED, BLUE, YELLOW, GREEN, MAGENTA, CYAN]
 
 WIDTH = 800
 HEIGHT = 600
+FLOOR = 450    #координата пола
 
 GRAVITY = 2
+ATTENUATION = 0.3   #коэффициент затухания при ударе шарика о стенки
 
 class Ball:
     def __init__(self, screen: pygame.Surface, x=40, y=450):
@@ -48,10 +50,17 @@ class Ball:
         """
         self.vy -= GRAVITY
 
-        if (self.x + self.r >= WIDTH) or (self.x - self.r <= 0):
+        if((self.x + self.r >= WIDTH) or (self.x - self.r <= 0)):
             self.vx = -self.vx
-        if (self.y + self.r >= HEIGHT) or (self.y - self.r <= 0):
+        elif(self.y + self.r <= 0):
             self.vy = -self.vy
+        elif(self.y - self.r > FLOOR):
+            self.y = FLOOR + self.r + 1
+            self.vy = - self.vy * ATTENUATION
+            self.vx = self.vx * ATTENUATION
+            self.live -= 1
+            if(self.live == 0):
+                self.color = WHITE     # need to be fixed!!
 
         self.x += self.vx
         self.y -= self.vy
@@ -112,7 +121,7 @@ class Gun:
 
     def draw(self):
         """Отрисовка пушки"""
-        len = 30
+        len = 30 + self.f2_power
         gun_x, gun_y = 40, 450
         pygame.draw.line(
             self.screen,
@@ -146,7 +155,7 @@ class Target:
     def new_target(self):
         """ Инициализация новой цели. """
         x = self.x = rnd(600, 780)
-        y = self.y = rnd(300, 550)
+        y = self.y = rnd(300, 400)
         r = self.r = rnd(2, 50)
         color = self.color = RED
 
