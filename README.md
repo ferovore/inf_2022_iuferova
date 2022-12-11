@@ -7,7 +7,7 @@
 
 10/11 [Построение графиков](https://colab.research.google.com/drive/1AV7PGMntxTp5mbWihtXoAm7LbAeR8aAk?usp=sharing "Выполненное задание")
 
-10/18 Контрольная работа (pandas и matplotlib)
+10/18 [Контрольная работа (pandas и matplotlib)](https://drive.google.com/file/d/1gOj1AM_KVunQ5zbn4EU4Oc9k-X6kgARh/view?usp=sharing)
 
 10/18 Исполнитель "Черепаха" (ч.1)  
 [Упражнения 2-9](https://colab.research.google.com/drive/1kuah2fBGOwFmedMv-HYcN74fICfQxH1b?usp=sharing)  
