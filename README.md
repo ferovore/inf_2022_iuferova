@@ -5,4 +5,4 @@
 
 10/18 Исполнитель "Черепаха" (ч.1)  
 [Упражнения 2-9](https://colab.research.google.com/drive/1kuah2fBGOwFmedMv-HYcN74fICfQxH1b?usp=sharing)  
-Упражнения 10-14: папка lab_turtle1
+Упражнения 10-12: папка lab_turtle1
