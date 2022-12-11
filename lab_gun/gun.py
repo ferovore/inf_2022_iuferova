@@ -24,6 +24,8 @@ FLOOR = 450    #координата пола
 GRAVITY = 2
 ATTENUATION = 0.3   #коэффициент затухания при ударе шарика о стенки
 
+targets_number = 2
+
 class Ball:
     def __init__(self, screen: pygame.Surface, x=40, y=450):
         """ Конструктор класса ball
@@ -148,6 +150,8 @@ class Target:
         self.screen = screen
         self.x = x
         self.y = y
+        self.v_x = 0
+        self.v_y = 0
         self.r = r
         self.color = RED
         self.new_target()
@@ -156,12 +160,28 @@ class Target:
         """ Инициализация новой цели. """
         x = self.x = rnd(600, 780)
         y = self.y = rnd(300, 400)
+        self.v_x = rnd(-7, 7)
+        self.v_y = rnd(-7, 7)
+        if(self.v_x == 0):
+            self.v_x = 5
         r = self.r = rnd(2, 50)
         color = self.color = RED
 
     def hit(self, points=1):
         """Попадание шарика в цель."""
         self.points += points
+
+    def move(self):
+        '''Движение цели'''
+        if ((self.x + self.r >= WIDTH) or (self.x - self.r <= 0)):
+            self.v_x = -self.v_x
+        if (self.y + self.r <= 0):
+            self.v_y = -self.v_y
+        if (self.y - self.r >= FLOOR):
+            self.y = FLOOR + self.r + 1
+            self.v_y = -self.v_y
+        self.x += self.v_x
+        self.y += self.v_y
 
     def draw(self):
         """Отрисовка цели"""
@@ -180,13 +200,18 @@ balls = []
 
 clock = pygame.time.Clock()
 gun = Gun(screen)
-target = Target(screen)
+
+targets = []
+for i in range(targets_number):
+    targets.append(Target(screen))
+
 finished = False
 
 while not finished:
     screen.fill(WHITE)
     gun.draw()
-    target.draw()
+    for target in targets:
+        target.draw()
     for b in balls:
         b.draw()
     pygame.display.update()
@@ -204,10 +229,14 @@ while not finished:
 
     for b in balls:
         b.move()
-        if b.hittest(target) and target.live:
-            target.live = 0
-            target.hit()
-            target.new_target()
+        for target in targets:
+            if b.hittest(target) and target.live:
+                target.live = 0
+                target.hit()
+                target.new_target()
     gun.power_up()
+
+    for target in targets:
+        target.move()
 
 pygame.quit()
