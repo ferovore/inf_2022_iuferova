@@ -8,3 +8,7 @@
 10/18 Исполнитель "Черепаха" (ч.1)  
 [Упражнения 2-9](https://colab.research.google.com/drive/1kuah2fBGOwFmedMv-HYcN74fICfQxH1b?usp=sharing)  
 Упражнения 10-12: папка lab_turtle1
+
+11/07 Картинки на выставку: папка lab_pygame.draw
+
+11/22 Игра "Пушка": папка lab_gun
